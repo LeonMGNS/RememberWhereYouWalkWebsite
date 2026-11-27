@@ -102,6 +102,18 @@
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
+
+  <!-- Interactive 3D replay: three.js from a pinned CDN version, no build step -->
+  <link rel="stylesheet" href="static/css/replay3d.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="static/js/replay3d.js"></script>
   
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
@@ -359,6 +371,65 @@ reducing the reconstruction error threefold.
       </video>
       <h2 class="subtitle has-text-centered">
         A Go2 quadruped explores a real-world maze using LSMM, transferred zero-shot from simulation. At every timestep we show the internal state of its spatial memory alongside the predicted maze layout
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- Interactive 3D replay of the real-world run (static/js/replay3d.js, data in static/replay/) -->
+<section class="hero teaser" id="replay">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered video-section-title">
+        Interactive Replay of the Real-World Run
+      </h2>
+      <div class="replay3d">
+        <div class="replay3d-stage">
+          <div class="replay3d-status">Scroll here to load the 3D replay.</div>
+          <div class="replay3d-hint">Drag to rotate · scroll or pinch to zoom · right-drag to pan</div>
+        </div>
+        <div class="replay3d-controls">
+          <div class="replay3d-timeline">
+            <button type="button" data-action="play" aria-label="Pause">❚❚</button>
+            <input type="range" min="0" max="1149" value="0" step="1" data-control="time" aria-label="Time">
+            <span class="replay3d-time" data-label="time">0.0 s</span>
+            <select data-control="speed" aria-label="Playback speed">
+              <option value="0.5">0.5×</option>
+              <option value="1" selected>1×</option>
+              <option value="2">2×</option>
+              <option value="4">4×</option>
+            </select>
+          </div>
+          <div class="replay3d-group">
+            <span class="replay3d-label">Camera</span>
+            <span class="replay3d-seg">
+              <button type="button" data-camera="free">Free</button>
+              <button type="button" data-camera="top">Top-down</button>
+              <button type="button" data-camera="follow">Follow robot</button>
+            </span>
+          </div>
+          <div class="replay3d-group">
+            <span class="replay3d-label">Memory</span>
+            <span class="replay3d-seg">
+              <button type="button" data-memory="off">Off</button>
+              <button type="button" data-memory="floor">On floor</button>
+              <button type="button" data-memory="float">Above maze</button>
+            </span>
+          </div>
+          <div class="replay3d-group">
+            <label class="replay3d-toggle"><input type="checkbox" data-toggle="prediction" checked>
+              <span class="replay3d-swatch" style="background: rgba(1, 115, 178, 0.55)"></span> Predicted walls</label>
+            <label class="replay3d-toggle"><input type="checkbox" data-toggle="walls" checked> Real inner walls</label>
+            <label class="replay3d-toggle"><input type="checkbox" data-toggle="path" checked>
+              <span class="replay3d-swatch" style="background: linear-gradient(90deg, #000, #ffc77f)"></span> Path</label>
+          </div>
+        </div>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        The recorded real-world run, replayed in 3D: base pose and joint angles of the Go2 are the measured data.
+        The cells show LSMM's matrix memory at that moment (light grey: not written yet), the blue walls are
+        the maze layout the policy predicts from its memory. Rotate, zoom and scrub through time freely.
       </h2>
     </div>
   </div>
